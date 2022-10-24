@@ -1,0 +1,16 @@
+{
+  "name": "fim-parish-info",
+  "version": "1.0.0",
+  "description": "Centralizes parish information to be used throughout the website",
+  "main": "admin/js/index.js",
+  "scripts": {
+    "start": "wp-scripts start",
+    "start:admin": "wp-scripts start admin/src/index.js --output-path=admin/js",
+    "build:admin": "wp-scripts build admin/src/index.js --output-path=admin/js"
+  },
+  "author": "Melissa Hiatt, Faith in Marketing",
+  "license": "ISC",
+  "devDependencies": {
+    "@wordpress/scripts": "^24.2.0"
+  }
+}

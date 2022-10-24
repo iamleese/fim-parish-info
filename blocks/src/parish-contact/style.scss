@@ -1,0 +1,49 @@
+/**
+ * The following styles get applied both on the front of your site
+ * and in the editor.
+ *
+ * Replace them with your own styles or remove the file completely.
+ */
+
+.wp-block-fim-parish-info-parish-contact {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 2rem;
+
+	& > div{
+		position: relative;
+		flex: calc(50%  - 2rem);
+	}
+
+	.parish-info-contact-wrap{
+		h3{
+			font-size: var(--wp--preset--font-size-medium);
+			margin-bottom: 1em;
+		}
+
+	}
+
+	.parish-info-map{
+		min-width: 280px;
+
+		.mapouter{
+			width: 100%;
+			height: 100%;
+			position: relative;
+
+			#gmap_canvas{
+				position: absolute;
+				top:0;
+				left:0;
+				width: 100%;
+				height: 100%;
+			}
+
+
+		}
+	}
+}
+
+.components-panel__row{
+	 flex-flow: unset;
+}
