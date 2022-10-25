@@ -83,6 +83,18 @@ export default function Edit({attributes, setAttributes}) {
                   onChange={ (val) => { setAttributes( { show_map: val } ) } }
                 />
                 </PanelRow>
+                <PanelRow>
+                <ToggleControl
+                  label="Hide Headings"
+                  checked = { hide_headings }
+                  help={
+                      hide_headings
+                          ? 'Headings Hidden'
+                          : ''
+                  }
+                  onChange={ (val) => { setAttributes( { hide_headings: val } ) } }
+                />
+                </PanelRow>
             </PanelBody>
         </Panel>
         </InspectorControls>

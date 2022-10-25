@@ -47,6 +47,7 @@ class Fim_Parish_Info_Blocks {
 		$show_phone = $attributes['show_phone'];
 		$show_map = $attributes['show_map'];
 		$show_email = $attributes['show_email'];
+		$hide_headings = $attributes['hide_headings'];
 
 		ob_start();
 
@@ -73,20 +74,26 @@ class Fim_Parish_Info_Blocks {
 
 		if($show_address){
 			$output .= '<div class="parish-info-address">';
-			$output .= '<h3>'.__('Address','fim_parish_info').'</h3>';
+			if( $hide_headings === false ){
+				$output .= '<h3>'.__('Address','fim_parish_info').'</h3>';
+			}
 			$output .= $contactinfo['street'].'<br />';
 			$output .= $contactinfo['city'].', '. $contactinfo['state'] . $contactinfo['zip'];
 			$output .= '</div>';
 		}
 		if($show_phone){
 			$output .= '<div class="parish-info-phone">';
-			$output .= '<h3>'.__('Phone','fim_parish_info').'</h3>';
+			if( $hide_headings === false ){
+				$output .= '<h3>'.__('Phone','fim_parish_info').'</h3>';
+			}
 			$output .= $contactinfo['phone'];
 			$output .= '</div>';
 		}
 		if($show_email){
 			$output .= '<div class="parish-info-email">';
-			$output .= '<h3>'.__('Email','fim_parish_info').'</h3>';
+			if( $hide_headings === false ){
+				$output .= '<h3>'.__('Email','fim_parish_info').'</h3>';
+			}
 			$output .= '<a href="mailto:'.$contactinfo['email'].'">'.$contactinfo['email'].'</a>';
 			$output .= '</div>';
 		}

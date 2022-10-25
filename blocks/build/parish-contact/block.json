@@ -23,7 +23,7 @@
       "type": "boolean",
       "default": true
     },
-    "show_social": {
+    "hide_headings": {
       "type": "boolean",
       "default": false
     }
