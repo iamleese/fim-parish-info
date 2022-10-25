@@ -11,6 +11,6 @@
   "author": "Melissa Hiatt, Faith in Marketing",
   "license": "ISC",
   "devDependencies": {
-    "@wordpress/scripts": "^24.2.0"
+    "@wordpress/scripts": "^24.4.0"
   }
 }

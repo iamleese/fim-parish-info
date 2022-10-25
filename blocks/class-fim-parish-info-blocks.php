@@ -36,6 +36,7 @@ class Fim_Parish_Info_Blocks {
 					'show_phone' => ['type' => 'boolean', 'default' => true ],
 					'show_map' => ['type' => 'boolean', 'default' => true ],
 					'show_email' => ['type' => 'boolean', 'default' => false ],
+					'hide_headings' => ['type' => 'boolean', 'default' => false ]
 			]
 		));
 
@@ -74,16 +75,16 @@ class Fim_Parish_Info_Blocks {
 
 		if($show_address){
 			$output .= '<div class="parish-info-address">';
-			if( $hide_headings === false ){
+			if( $hide_headings == false || $hide_headings == ''){
 				$output .= '<h3>'.__('Address','fim_parish_info').'</h3>';
 			}
 			$output .= $contactinfo['street'].'<br />';
-			$output .= $contactinfo['city'].', '. $contactinfo['state'] . $contactinfo['zip'];
+			$output .= $contactinfo['city'].', '. $contactinfo['state'] .' '.$contactinfo['zip'];
 			$output .= '</div>';
 		}
 		if($show_phone){
 			$output .= '<div class="parish-info-phone">';
-			if( $hide_headings === false ){
+			if( $hide_headings == false || $hide_headings == ''){
 				$output .= '<h3>'.__('Phone','fim_parish_info').'</h3>';
 			}
 			$output .= $contactinfo['phone'];
@@ -91,7 +92,7 @@ class Fim_Parish_Info_Blocks {
 		}
 		if($show_email){
 			$output .= '<div class="parish-info-email">';
-			if( $hide_headings === false ){
+			if( $hide_headings == false || $hide_headings == ''){
 				$output .= '<h3>'.__('Email','fim_parish_info').'</h3>';
 			}
 			$output .= '<a href="mailto:'.$contactinfo['email'].'">'.$contactinfo['email'].'</a>';
