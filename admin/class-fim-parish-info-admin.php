@@ -376,7 +376,7 @@ class Fim_Parish_Info_Admin {
 
 		?>
 		</div><!-- Mass Time container -->
-		<a class="add_time_group button">+ Add Mass Group</a>
+		<div class="add_time_group button">+ Add Mass Group</div>
 		<?php
 	}//_mass_times_cb
 

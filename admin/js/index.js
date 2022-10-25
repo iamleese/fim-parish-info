@@ -21,6 +21,10 @@ document.addEventListener('DOMContentLoaded', function (event) {
 
 
   const addtimegroup = document.querySelector('.add_time_group');
+  addtimegroup.addEventListener("click", function (e) {
+    e.preventDefault;
+    add_time_group();
+  });
 
   function setFieldAttributes(obj, name, value) {
     obj.setAttribute(name, value);

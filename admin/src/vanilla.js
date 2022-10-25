@@ -3,7 +3,6 @@ document.addEventListener('DOMContentLoaded', function(event) {
 
 
 
-
   function deleteButton(container_id) {
     let a = document.createElement('a');
     a.textContent = 'Delete Time';
@@ -19,9 +18,15 @@ document.addEventListener('DOMContentLoaded', function(event) {
   //Add Time Group
   const addtimegroup = document.querySelector('.add_time_group');
 
+  addtimegroup.addEventListener("click",function(e){
+    e.preventDefault;
+    add_time_group();
+  });
+
   function setFieldAttributes(obj,name,value){
     obj.setAttribute(name,value);
   }
+
 
   function add_time_group(){
 
@@ -150,6 +155,8 @@ document.addEventListener('DOMContentLoaded', function(event) {
   }
 
 //Dynamic Object Listeners
+
+
   document.addEventListener('click',function(e){
 
       //Add Time Fields
@@ -259,6 +266,7 @@ document.addEventListener('DOMContentLoaded', function(event) {
 
 
    }); //event listeners
+
 
    //get contact input change
    let contactinputs = document.querySelectorAll('.contact_input');
