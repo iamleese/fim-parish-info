@@ -22,13 +22,13 @@
 }
 
  #mass_times_outer .popup_modal{
-   display: block;
+   display: flex;
+   flex-direction: column;
    position: absolute;
    top: 50%;
    left: 50%;
    transform: translate(-50%, -50%);
    box-sizing: border-box;
-   display: block;
    max-width: 1100px;
    width: 80vw;
    max-height: 90vh;
@@ -90,7 +90,7 @@
   margin-right: -100%;
   visibility: hidden;
   height: 100%;
-  overflow-y: auto;
+  padding-bottom: 2rem;
 }
 
 .tabcontent.active{
@@ -98,20 +98,19 @@
 }
 
 #mass_times_outer .popup_modal .contentwrap{
-  padding: 2em;
+  display: flex;
+  padding: 2em 2em 0 2em;
   background: #ffffff;
   background: -moz-linear-gradient(top,  #e5e5e5 0%, #ffffff 40%);
   background: -webkit-linear-gradient(top,  #e5e5e5 0%,#ffffff 40%);
   background: linear-gradient(to bottom,  #e5e5e5 0%,#ffffff 40%);
-  display: flex;
+  overflow-y: scroll;
 }
 
 #mass_time_content{
   display: flex;
   flex-wrap: wrap;
   gap: 2rem;
-
-
 }
 
 #mass_time_content  .content-title{
@@ -140,10 +139,6 @@
 
 }
 
-.popup_mass_times{
-
-}
-
 .popup_map .mapouter{
   display: block;
   position: relative;
@@ -153,7 +148,6 @@
 
 .popup_map .mapouter #gmap_canvas{
   display: block;
-  min-width: 280px;
   width: 100%;
   height: 100%;
   position:absolute;
