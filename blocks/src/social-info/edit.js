@@ -1,8 +1,9 @@
 import { __ } from '@wordpress/i18n';
 import { useBlockProps, InspectorControls, ColorPalette } from '@wordpress/block-editor';
-import { ToggleControl, Panel, PanelBody, PanelRow, ColorIndicator } from '@wordpress/components';
+import { ToggleControl, Panel, PanelBody, PanelRow, ColorIndicator, RadioControl, RangeControl } from '@wordpress/components';
 import {useState, useEffect} from '@wordpress/element';
 import apiFetch from '@wordpress/api-fetch';
+const classNames = require('classnames');
 
 import './editor.scss';
 
@@ -20,6 +21,9 @@ export default function Edit({attributes, setAttributes}) {
   const show_name = attributes.show_name;
   const custom_color = attributes.custom_color;
   const use_custom_colors = attributes.use_custom_colors;
+  const flexlayout = attributes.flexlayout;
+  const gap = attributes.gap;
+  const iconsize = attributes.iconsize;
 
 
 function SocialLinks() {
@@ -53,9 +57,9 @@ function SocialLinks() {
         );
 
     return (
-        <div>
+        <div className="socialLinkList" style={{flexDirection:flexlayout, gap:gap+'px'}}>
                 {state === 'loading' ? (
-                    <h1>Loading...</h1>
+                    <h4>Loading...</h4>
                 ) : (
                   Object.entries(links).map( ([key,value]) => {
                       if(value.length > 0 && value != ''){
@@ -68,7 +72,7 @@ function SocialLinks() {
                         } else {
                           displayname = name.charAt(0).toUpperCase() + name.slice(1);
                         }
-                        return <li><a className={name} href={link}><span className="display_name">{displayname}</span></a></li>
+                        return <li><a className={name+' social_item'} ><div className="iconContainer" style={{width:iconsize+'px'}}><span className="icon" style={{ backgroundColor: use_custom_colors ? custom_color : '' }}></span></div><span className="display_name">{displayname}</span></a></li>
                       }
                     })
                 )}
@@ -77,15 +81,34 @@ function SocialLinks() {
     );
 }
 
+
+  const [isShowingName, setIsShowingName] = useState(show_name);
   const [isShowingIcons, setIsShowingIcons ] = useState(show_icons);
   const [ isShowingColors, setIsShowingColors] = useState(use_custom_colors);
+
+  function toggleName(){
+    if(isShowingName == false){
+			setIsShowingName( true );
+		} else {
+			setIsShowingName( false );
+      if(isShowingIcons == false){
+        setIsShowingIcons(true);
+        setAttributes({ show_icons: true});
+      }
+		}
+  }
 
   function toggleIcons() {
 		if(isShowingIcons == false){
 			setIsShowingIcons( true );
 		} else {
+      if(isShowingName == false){
+        setIsShowingName(true);
+        setAttributes({ show_name: true});
+      }
 			setIsShowingIcons( false );
 		}
+
 	}
 
   function toggleColors() {
@@ -95,7 +118,6 @@ function SocialLinks() {
 			setIsShowingColors( false );
 		}
 	}
-
 
   const CustomColor = () => {
     return(
@@ -112,6 +134,16 @@ function SocialLinks() {
 
   const ShowColorOption = () => {
     return(
+      <div>
+      <PanelRow>
+      <RangeControl
+          label="Icon Size"
+          value={ iconsize }
+          onChange={ ( value ) => setAttributes( {iconsize : value} ) }
+          min={ 20 }
+          max={ 100 }
+      />
+      </PanelRow>
       <PanelRow>
       <ToggleControl
         label="Use Custom Colors"
@@ -120,25 +152,28 @@ function SocialLinks() {
       />
 
       </PanelRow>
+      </div>
     )
   }
 
+  const blockProps = useBlockProps({
+    className: classNames(show_icons ? 'show_icons' : '', show_name ? 'show_name' : '')
+  });
+  
 
 	return (
-    <div { ...useBlockProps() }>
-    <div id="SocialLinkList">
-    test
+    <div {...blockProps}>
+
     {SocialLinks()}
-    </div>
 
     <InspectorControls key="setting">
         <Panel>
-            <PanelBody title="Social Media Display Options">
+            <PanelBody title="Display Options">
                 <PanelRow>
                 <ToggleControl
                   label="Show Name"
                   checked = { show_name}
-                  onChange={ (val) => { setAttributes( { show_name: val } ) } }
+                  onChange={ (val) => { setAttributes( { show_name: val } ), toggleName() } }
                 />
                 </PanelRow>
 
@@ -158,8 +193,31 @@ function SocialLinks() {
                   <CustomColor />
                 )}
 
-
             </PanelBody>
+
+            <PanelBody title="Layout Options">
+              <PanelRow>
+              <RadioControl
+                    label="Display as:"
+                    selected={ flexlayout }
+                    options={ [
+                        { label: 'Columns', value: 'column' },
+                        { label: 'Rows', value: 'row' },
+                    ] }
+                    onChange={ ( value ) => setAttributes( {flexlayout : value} ) }
+                />
+              </PanelRow>
+              <PanelRow>
+              <RangeControl
+                  label="Spacing"
+                  value={ gap }
+                  onChange={ ( value ) => setAttributes( {gap : value} ) }
+                  min={ 0 }
+                  max={ 100 }
+              />
+              </PanelRow>
+            </PanelBody>
+
         </Panel>
         </InspectorControls>
 

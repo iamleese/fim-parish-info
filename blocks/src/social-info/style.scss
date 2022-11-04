@@ -1,11 +1,83 @@
-/**
- * The following styles get applied both on the front of your site
- * and in the editor.
- *
- * Replace them with your own styles or remove the file completely.
- */
-
+/** Front / Back End styles **/
  .wp-block-fim-parish-info-social-info {
+   .socialLinkList{
+     display: flex;
+
+     > li{
+       list-style: none;
+       margin-left:0;
+       padding-left:0;
+
+       a{
+         display: flex;
+         flex-direction: row no-wrap;
+         gap: 8px;
+         align-content: center;
+       }
+     }
+  }
+    .facebook{
+      .icon {
+        mask-image: url('assets/facebook-icon.svg');
+        -webkit-mask-image: url('assets/facebook-icon.svg');
+        background-color: #4267B2;
+      }
+    }
+
+    .instagram{
+      .icon {
+        mask-image: url('assets/instagram-icon.svg');
+        -webkit-mask-image: url('assets/instagram-icon.svg');
+        background: rgb(118,56,250);
+        background: linear-gradient(180deg, rgba(118,56,250,1) 0%, rgba(211,0,197,1) 26%, rgba(255,0,105,1) 51%, rgba(255,122,0,1) 75%, rgba(255,255,0,1) 100%);
+
+      }
+    }
+
+    .twitter{
+      .icon {
+        mask-image: url('assets/twitter-icon.svg');
+        -webkit-mask-image: url('assets/twitter-icon.svg');
+        background-color: #1DA1F2;
+      }
+    }
+
+    .linkedin{
+      .icon {
+        mask-image: url('assets/linkedin-icon.svg');
+        -webkit-mask-image: url('assets/linkedin-icon.svg');
+        background-color: #0a66c2;
+      }
+    }
+
+    .iconContainer{
+      display: none;
+      box-sizing: border-box;
+    }
+
+   &.show_icons{
+     .iconContainer{
+       display: block;
+
+        .icon{
+          display: block;
+          width: 100%;
+          padding-top: 100%;
+          mask-size: contain;
+          mask-repeat: no-repeat;
+        }
+     }
+   }
+
+   .display_name{
+     display: none;
+   }
+
+   &.show_name{
+     .display_name{
+       display: inline;
+     }
+   }
  }
 
 .components-panel__row{

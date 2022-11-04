@@ -15,13 +15,12 @@ import './editor.scss';
  */
 export default function Edit({attributes, setAttributes}) {
 
-
   var show_address = attributes.show_address;
   var show_phone = attributes.show_phone;
   var show_map = attributes.show_map;
   var show_email = attributes.show_email;
   var hide_headings = attributes.hide_headings;
-  
+
 
 	return (
     <div { ...useBlockProps() }>

@@ -41,7 +41,39 @@ class Fim_Parish_Info_Blocks {
 		));
 
 		register_block_type( __DIR__ . '/build/mass-times' );
-		register_block_type( __DIR__ . '/build/social-info' );
+		register_block_type( __DIR__ . '/build/social-info', array(
+			'render_callback' => array($this, 'socialLinks'),
+			'attributes' => [
+					'show_icons'=> [
+						'type' => 'boolean',
+						'default' => true
+					],
+					'show_name'=> [
+						'type' => 'boolean',
+						'default' => true
+					],
+					'use_custom_colors'=> [
+						'type' => 'boolean',
+						'default' => false
+					],
+					'custom_color'=> [
+						'type'=> 'string',
+						'default'=> '#000000'
+					],
+					'flexlayout'=> [
+						'type'=> 'string',
+						'default'=> 'column'
+					],
+					'gap'=>[
+						'type' => 'string',
+						'default' => '5'
+					],
+					'iconsize'=>[
+						'type' => 'string',
+						'default' => '32'
+					]
+				]
+		));
 
 	}
 
@@ -120,17 +152,39 @@ class Fim_Parish_Info_Blocks {
 
 	}
 
-	public function socialLinks(){
+	public function socialLinks($attributes,$output = ''){
+		$show_icons = $attributes['show_icons'] ? ' show_icons' : '';
+		$show_name = $attributes['show_name'] ? ' show_name' : '';
+		$custom_color = $attributes['custom_color'];
+		$use_custom_colors = $attributes['use_custom_colors'];
+		$flexlayout = $attributes['flexlayout'];
+		$gap = $attributes['gap'];
+		$iconsize = $attributes['iconsize'];
 
-			$social_links = get_option($option_name.'_social_links');
-
+			$social_links = get_option($this->option_name.'_social_links');
 			ob_start();
-			$output = '<div class="parish-info-social">';
+
+			$output = '<div class="wp-block-fim-parish-info-social-info '.$show_icons.$show_name.'">';
+			$output .= '<div class="socialLinkList" style="flex-direction:'.$flexlayout.'; gap:'.$gap.'px;">';
+
 			foreach ($social_links as $social => $link){
+				if($social == 'linkedin'){
+					$displayname = 'LinkedIn';
+				} else {
+					$displayname = ucfirst($social);
+				}
 				if(!empty($link)){
-					$output .= '<li class="parish-info-social-item '.$social.'"><a href="'.$link.'" target="_blank" ><span class="social_name">'.ucfirst($social).'</span></a></li>';;
+					$bgcolor = $use_custom_colors ? 'style="background-color:'.$custom_color.';"' : '' ;
+
+					$output .='<li><a class="'.$social.' social_item" href="'.$link.'">
+									<div class="iconContainer" style="width:'.$iconsize.'px;">
+									<span class="icon" '.$bgcolor.'>
+									</span>
+									</div>
+									<span class="display_name">'.$displayname.'</span></a></li>';
 				}
 			}
+			$output .= '</div>';
 			$output .= '</div>';
 
 			$output .= ob_get_clean();

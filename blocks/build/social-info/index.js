@@ -1,5 +1,4 @@
 /******/ (function() { // webpackBootstrap
-/******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
 /***/ "./src/social-info/edit.js":
@@ -8,6 +7,7 @@
   \*********************************/
 /***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
+"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": function() { return /* binding */ Edit; }
@@ -29,6 +29,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+const classNames = __webpack_require__(/*! classnames */ "./node_modules/classnames/index.js");
 
 
 /**
@@ -48,6 +49,9 @@ function Edit(_ref) {
   const show_name = attributes.show_name;
   const custom_color = attributes.custom_color;
   const use_custom_colors = attributes.use_custom_colors;
+  const flexlayout = attributes.flexlayout;
+  const gap = attributes.gap;
+  const iconsize = attributes.iconsize;
   function SocialLinks() {
     const [links, setLinks] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useState)('');
     const [state, setState] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useState)('');
@@ -68,7 +72,13 @@ function Edit(_ref) {
       fetchLinks();
     }, []);
     if (state === 'error') return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h1", null, error.toString());
-    return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null, state === 'loading' ? (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h1", null, "Loading...") : Object.entries(links).map(_ref2 => {
+    return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+      className: "socialLinkList",
+      style: {
+        flexDirection: flexlayout,
+        gap: gap + 'px'
+      }
+    }, state === 'loading' ? (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h4", null, "Loading...") : Object.entries(links).map(_ref2 => {
       let [key, value] = _ref2;
       if (value.length > 0 && value != '') {
         var name = key.toString();
@@ -80,20 +90,49 @@ function Edit(_ref) {
           displayname = name.charAt(0).toUpperCase() + name.slice(1);
         }
         return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("li", null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("a", {
-          className: name,
-          href: link
+          className: name + ' social_item'
+        }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+          className: "iconContainer",
+          style: {
+            width: iconsize + 'px'
+          }
         }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
+          className: "icon",
+          style: {
+            backgroundColor: use_custom_colors ? custom_color : ''
+          }
+        })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
           className: "display_name"
         }, displayname)));
       }
     }));
   }
+  const [isShowingName, setIsShowingName] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useState)(show_name);
   const [isShowingIcons, setIsShowingIcons] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useState)(show_icons);
   const [isShowingColors, setIsShowingColors] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useState)(use_custom_colors);
+  function toggleName() {
+    if (isShowingName == false) {
+      setIsShowingName(true);
+    } else {
+      setIsShowingName(false);
+      if (isShowingIcons == false) {
+        setIsShowingIcons(true);
+        setAttributes({
+          show_icons: true
+        });
+      }
+    }
+  }
   function toggleIcons() {
     if (isShowingIcons == false) {
       setIsShowingIcons(true);
     } else {
+      if (isShowingName == false) {
+        setIsShowingName(true);
+        setAttributes({
+          show_name: true
+        });
+      }
       setIsShowingIcons(false);
     }
   }
@@ -118,7 +157,15 @@ function Edit(_ref) {
     }));
   };
   const ShowColorOption = () => {
-    return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.PanelRow, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.ToggleControl, {
+    return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.PanelRow, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.RangeControl, {
+      label: "Icon Size",
+      value: iconsize,
+      onChange: value => setAttributes({
+        iconsize: value
+      }),
+      min: 20,
+      max: 100
+    })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.PanelRow, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.ToggleControl, {
       label: "Use Custom Colors",
       checked: use_custom_colors,
       onChange: val => {
@@ -126,21 +173,22 @@ function Edit(_ref) {
           use_custom_colors: val
         }), toggleColors();
       }
-    }));
+    })));
   };
-  return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", (0,_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__.useBlockProps)(), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    id: "SocialLinkList"
-  }, "test", SocialLinks()), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__.InspectorControls, {
+  const blockProps = (0,_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__.useBlockProps)({
+    className: classNames(show_icons ? 'show_icons' : '', show_name ? 'show_name' : '')
+  });
+  return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", blockProps, SocialLinks(), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__.InspectorControls, {
     key: "setting"
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.Panel, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.PanelBody, {
-    title: "Social Media Display Options"
+    title: "Display Options"
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.PanelRow, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.ToggleControl, {
     label: "Show Name",
     checked: show_name,
     onChange: val => {
       setAttributes({
         show_name: val
-      });
+      }), toggleName();
     }
   })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.PanelRow, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.ToggleControl, {
     label: "Show Icons",
@@ -150,7 +198,30 @@ function Edit(_ref) {
         show_icons: val
       }), toggleIcons();
     }
-  })), isShowingIcons && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(ShowColorOption, null), isShowingIcons && isShowingColors && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(CustomColor, null)))));
+  })), isShowingIcons && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(ShowColorOption, null), isShowingIcons && isShowingColors && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(CustomColor, null)), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.PanelBody, {
+    title: "Layout Options"
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.PanelRow, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.RadioControl, {
+    label: "Display as:",
+    selected: flexlayout,
+    options: [{
+      label: 'Columns',
+      value: 'column'
+    }, {
+      label: 'Rows',
+      value: 'row'
+    }],
+    onChange: value => setAttributes({
+      flexlayout: value
+    })
+  })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.PanelRow, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.RangeControl, {
+    label: "Spacing",
+    value: gap,
+    onChange: value => setAttributes({
+      gap: value
+    }),
+    min: 0,
+    max: 100
+  }))))));
 }
 
 /***/ }),
@@ -161,6 +232,7 @@ function Edit(_ref) {
   \**********************************/
 /***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
+"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_blocks__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/blocks */ "@wordpress/blocks");
 /* harmony import */ var _wordpress_blocks__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_blocks__WEBPACK_IMPORTED_MODULE_0__);
@@ -215,32 +287,90 @@ __webpack_require__.r(__webpack_exports__);
   \*********************************/
 /***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
+"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": function() { return /* binding */ save; }
 /* harmony export */ });
 /* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/block-editor */ "@wordpress/block-editor");
 /* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_0__);
-/**
- * React hook that is used to mark the block wrapper element.
- * It provides all the necessary props like the class name.
- *
- * @see https://developer.wordpress.org/block-editor/reference-guides/packages/packages-block-editor/#useblockprops
- */
 
-
-/**
- * The save function defines the way in which the different attributes should
- * be combined into the final markup, which is then serialized by the block
- * editor into `post_content`.
- *
- * @see https://developer.wordpress.org/block-editor/reference-guides/block-api/block-edit-save/#save
- *
- * @return {WPElement} Element to render.
- */
-function save() {
+function save(_ref) {
+  let {
+    attributes,
+    className
+  } = _ref;
   return null;
 }
+
+/***/ }),
+
+/***/ "./node_modules/classnames/index.js":
+/*!******************************************!*\
+  !*** ./node_modules/classnames/index.js ***!
+  \******************************************/
+/***/ (function(module, exports) {
+
+var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
+	Copyright (c) 2018 Jed Watson.
+	Licensed under the MIT License (MIT), see
+	http://jedwatson.github.io/classnames
+*/
+/* global define */
+
+(function () {
+	'use strict';
+
+	var hasOwn = {}.hasOwnProperty;
+	var nativeCodeString = '[native code]';
+
+	function classNames() {
+		var classes = [];
+
+		for (var i = 0; i < arguments.length; i++) {
+			var arg = arguments[i];
+			if (!arg) continue;
+
+			var argType = typeof arg;
+
+			if (argType === 'string' || argType === 'number') {
+				classes.push(arg);
+			} else if (Array.isArray(arg)) {
+				if (arg.length) {
+					var inner = classNames.apply(null, arg);
+					if (inner) {
+						classes.push(inner);
+					}
+				}
+			} else if (argType === 'object') {
+				if (arg.toString !== Object.prototype.toString && !arg.toString.toString().includes('[native code]')) {
+					classes.push(arg.toString());
+					continue;
+				}
+
+				for (var key in arg) {
+					if (hasOwn.call(arg, key) && arg[key]) {
+						classes.push(key);
+					}
+				}
+			}
+		}
+
+		return classes.join(' ');
+	}
+
+	if ( true && module.exports) {
+		classNames.default = classNames;
+		module.exports = classNames;
+	} else if (true) {
+		// register as 'classnames', consistent with npm package name
+		!(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_RESULT__ = (function () {
+			return classNames;
+		}).apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__),
+		__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	} else {}
+}());
+
 
 /***/ }),
 
@@ -250,6 +380,7 @@ function save() {
   \*************************************/
 /***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
+"use strict";
 __webpack_require__.r(__webpack_exports__);
 // extracted by mini-css-extract-plugin
 
@@ -262,6 +393,7 @@ __webpack_require__.r(__webpack_exports__);
   \************************************/
 /***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
+"use strict";
 __webpack_require__.r(__webpack_exports__);
 // extracted by mini-css-extract-plugin
 
@@ -274,6 +406,7 @@ __webpack_require__.r(__webpack_exports__);
   \**********************************/
 /***/ (function(module) {
 
+"use strict";
 module.exports = window["wp"]["apiFetch"];
 
 /***/ }),
@@ -284,6 +417,7 @@ module.exports = window["wp"]["apiFetch"];
   \*************************************/
 /***/ (function(module) {
 
+"use strict";
 module.exports = window["wp"]["blockEditor"];
 
 /***/ }),
@@ -294,6 +428,7 @@ module.exports = window["wp"]["blockEditor"];
   \********************************/
 /***/ (function(module) {
 
+"use strict";
 module.exports = window["wp"]["blocks"];
 
 /***/ }),
@@ -304,6 +439,7 @@ module.exports = window["wp"]["blocks"];
   \************************************/
 /***/ (function(module) {
 
+"use strict";
 module.exports = window["wp"]["components"];
 
 /***/ }),
@@ -314,6 +450,7 @@ module.exports = window["wp"]["components"];
   \*********************************/
 /***/ (function(module) {
 
+"use strict";
 module.exports = window["wp"]["element"];
 
 /***/ }),
@@ -324,6 +461,7 @@ module.exports = window["wp"]["element"];
   \******************************/
 /***/ (function(module) {
 
+"use strict";
 module.exports = window["wp"]["i18n"];
 
 /***/ }),
@@ -334,7 +472,8 @@ module.exports = window["wp"]["i18n"];
   \************************************/
 /***/ (function(module) {
 
-module.exports = JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","apiVersion":2,"name":"fim-parish-info/social-info","version":"1.0.0","title":"Parish Social Media Accounts","category":"fim-parish-info","icon":"dashicons-text","description":"Displays the parish social media information","supports":{"html":false},"attributes":{"show_icons":{"type":"boolean","default":true},"show_name":{"type":"boolean","default":true},"use_custom_colors":{"type":"boolean","default":false},"custom_color":{"type":"string","default":"#000000"}},"textdomain":"blocks","editorScript":"file:./index.js","editorStyle":"file:./index.css","style":"file:./style-index.css"}');
+"use strict";
+module.exports = JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","apiVersion":2,"name":"fim-parish-info/social-info","version":"1.0.0","title":"Parish Social Media Accounts","category":"fim-parish-info","icon":"dashicons-text","description":"Displays the parish social media information","supports":{"html":false},"attributes":{"show_icons":{"type":"boolean","default":true},"show_name":{"type":"boolean","default":true},"use_custom_colors":{"type":"boolean","default":false},"custom_color":{"type":"string","default":"#000000"},"flexlayout":{"type":"string","default":"column"},"gap":{"type":"string","default":"5"},"iconsize":{"type":"string","default":"32"}},"textdomain":"fim-parish-info","editorScript":"file:./index.js","editorStyle":"file:./index.css","style":"file:./style-index.css"}');
 
 /***/ })
 

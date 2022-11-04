@@ -26,9 +26,21 @@
 		"custom_color": {
 			"type": "string",
 			"default": "#000000"
+		},
+		"flexlayout": {
+			"type": "string",
+			"default": "column"
+		},
+		"gap":{
+			"type" : "string",
+			"default" : "5"
+		},
+		"iconsize":{
+			"type" : "string",
+			"default" : "32"
 		}
 	},
-	"textdomain": "blocks",
+	"textdomain": "fim-parish-info",
 	"editorScript": "file:./index.js",
 	"editorStyle": "file:./index.css",
 	"style": "file:./style-index.css"
