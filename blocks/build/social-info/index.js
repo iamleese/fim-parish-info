@@ -2,10 +2,10 @@
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
-/***/ "./src/mass-times/edit.js":
-/*!********************************!*\
-  !*** ./src/mass-times/edit.js ***!
-  \********************************/
+/***/ "./src/social-info/edit.js":
+/*!*********************************!*\
+  !*** ./src/social-info/edit.js ***!
+  \*********************************/
 /***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 __webpack_require__.r(__webpack_exports__);
@@ -22,7 +22,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__);
 /* harmony import */ var _wordpress_api_fetch__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @wordpress/api-fetch */ "@wordpress/api-fetch");
 /* harmony import */ var _wordpress_api_fetch__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_wordpress_api_fetch__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var _editor_scss__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./editor.scss */ "./src/mass-times/editor.scss");
+/* harmony import */ var _editor_scss__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./editor.scss */ "./src/social-info/editor.scss");
 
 
 
@@ -32,27 +32,142 @@ __webpack_require__.r(__webpack_exports__);
 
 
 /**
+ * The edit function describes the structure of your block in the context of the
+ * editor. This represents what the editor will render when the block is used.
+ *
+ * @see https://developer.wordpress.org/block-editor/reference-guides/block-api/block-edit-save/#edit
+ *
  * @return {WPElement} Element to render.
  */
-function Edit() {
-  return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", (0,_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__.useBlockProps)(), (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Blocks – hello from the editor!', 'blocks'));
+function Edit(_ref) {
+  let {
+    attributes,
+    setAttributes
+  } = _ref;
+  const show_icons = attributes.show_icons;
+  const show_name = attributes.show_name;
+  const custom_color = attributes.custom_color;
+  const use_custom_colors = attributes.use_custom_colors;
+  function SocialLinks() {
+    const [links, setLinks] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useState)('');
+    const [state, setState] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useState)('');
+    const [error, setError] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
+    function fetchLinks() {
+      setState('loading');
+      _wordpress_api_fetch__WEBPACK_IMPORTED_MODULE_4___default()({
+        path: '/fim-parish-info/v1/option/social_links'
+      }).then(response => {
+        setState('success');
+        setLinks(response);
+      }).catch(err => {
+        setState('error');
+        setError(err);
+      });
+    }
+    (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
+      fetchLinks();
+    }, []);
+    if (state === 'error') return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h1", null, error.toString());
+    return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null, state === 'loading' ? (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h1", null, "Loading...") : Object.entries(links).map(_ref2 => {
+      let [key, value] = _ref2;
+      if (value.length > 0 && value != '') {
+        var name = key.toString();
+        var link = value.toString();
+        var displayname;
+        if (name == 'linkedin') {
+          displayname = 'LinkedIn';
+        } else {
+          displayname = name.charAt(0).toUpperCase() + name.slice(1);
+        }
+        return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("li", null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("a", {
+          className: name,
+          href: link
+        }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
+          className: "display_name"
+        }, displayname)));
+      }
+    }));
+  }
+  const [isShowingIcons, setIsShowingIcons] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useState)(show_icons);
+  const [isShowingColors, setIsShowingColors] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useState)(use_custom_colors);
+  function toggleIcons() {
+    if (isShowingIcons == false) {
+      setIsShowingIcons(true);
+    } else {
+      setIsShowingIcons(false);
+    }
+  }
+  function toggleColors() {
+    if (isShowingColors == false) {
+      setIsShowingColors(true);
+    } else {
+      setIsShowingColors(false);
+    }
+  }
+  const CustomColor = () => {
+    return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.PanelRow, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("label", null, "Icon Color: ", (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.ColorIndicator, {
+      colorValue: custom_color
+    })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__.ColorPalette, {
+      value: custom_color,
+      disableCustomColors: "true",
+      onChange: color => {
+        setAttributes({
+          custom_color: color
+        });
+      }
+    }));
+  };
+  const ShowColorOption = () => {
+    return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.PanelRow, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.ToggleControl, {
+      label: "Use Custom Colors",
+      checked: use_custom_colors,
+      onChange: val => {
+        setAttributes({
+          use_custom_colors: val
+        }), toggleColors();
+      }
+    }));
+  };
+  return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", (0,_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__.useBlockProps)(), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    id: "SocialLinkList"
+  }, "test", SocialLinks()), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__.InspectorControls, {
+    key: "setting"
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.Panel, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.PanelBody, {
+    title: "Social Media Display Options"
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.PanelRow, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.ToggleControl, {
+    label: "Show Name",
+    checked: show_name,
+    onChange: val => {
+      setAttributes({
+        show_name: val
+      });
+    }
+  })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.PanelRow, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.ToggleControl, {
+    label: "Show Icons",
+    checked: show_icons,
+    onChange: val => {
+      setAttributes({
+        show_icons: val
+      }), toggleIcons();
+    }
+  })), isShowingIcons && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(ShowColorOption, null), isShowingIcons && isShowingColors && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(CustomColor, null)))));
 }
 
 /***/ }),
 
-/***/ "./src/mass-times/index.js":
-/*!*********************************!*\
-  !*** ./src/mass-times/index.js ***!
-  \*********************************/
+/***/ "./src/social-info/index.js":
+/*!**********************************!*\
+  !*** ./src/social-info/index.js ***!
+  \**********************************/
 /***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_blocks__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/blocks */ "@wordpress/blocks");
 /* harmony import */ var _wordpress_blocks__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_blocks__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _style_scss__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./style.scss */ "./src/mass-times/style.scss");
-/* harmony import */ var _edit__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./edit */ "./src/mass-times/edit.js");
-/* harmony import */ var _save__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./save */ "./src/mass-times/save.js");
-/* harmony import */ var _block_json__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./block.json */ "./src/mass-times/block.json");
+/* harmony import */ var _style_scss__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./style.scss */ "./src/social-info/style.scss");
+/* harmony import */ var _edit__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./edit */ "./src/social-info/edit.js");
+/* harmony import */ var _save__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./save */ "./src/social-info/save.js");
+/* harmony import */ var _block_json__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./block.json */ "./src/social-info/block.json");
 /**
  * Registers a new block provided a unique name and an object defining its behavior.
  *
@@ -94,21 +209,18 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./src/mass-times/save.js":
-/*!********************************!*\
-  !*** ./src/mass-times/save.js ***!
-  \********************************/
+/***/ "./src/social-info/save.js":
+/*!*********************************!*\
+  !*** ./src/social-info/save.js ***!
+  \*********************************/
 /***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": function() { return /* binding */ save; }
 /* harmony export */ });
-/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
-/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/block-editor */ "@wordpress/block-editor");
-/* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1__);
-
+/* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/block-editor */ "@wordpress/block-editor");
+/* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_0__);
 /**
  * React hook that is used to mark the block wrapper element.
  * It provides all the necessary props like the class name.
@@ -127,15 +239,15 @@ __webpack_require__.r(__webpack_exports__);
  * @return {WPElement} Element to render.
  */
 function save() {
-  return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1__.useBlockProps.save(), 'Blocks – hello from the saved content!');
+  return null;
 }
 
 /***/ }),
 
-/***/ "./src/mass-times/editor.scss":
-/*!************************************!*\
-  !*** ./src/mass-times/editor.scss ***!
-  \************************************/
+/***/ "./src/social-info/editor.scss":
+/*!*************************************!*\
+  !*** ./src/social-info/editor.scss ***!
+  \*************************************/
 /***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 __webpack_require__.r(__webpack_exports__);
@@ -144,10 +256,10 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./src/mass-times/style.scss":
-/*!***********************************!*\
-  !*** ./src/mass-times/style.scss ***!
-  \***********************************/
+/***/ "./src/social-info/style.scss":
+/*!************************************!*\
+  !*** ./src/social-info/style.scss ***!
+  \************************************/
 /***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 __webpack_require__.r(__webpack_exports__);
@@ -216,13 +328,13 @@ module.exports = window["wp"]["i18n"];
 
 /***/ }),
 
-/***/ "./src/mass-times/block.json":
-/*!***********************************!*\
-  !*** ./src/mass-times/block.json ***!
-  \***********************************/
+/***/ "./src/social-info/block.json":
+/*!************************************!*\
+  !*** ./src/social-info/block.json ***!
+  \************************************/
 /***/ (function(module) {
 
-module.exports = JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","apiVersion":2,"name":"fim-parish-info/mass-times","version":"0.1.0","title":"Mass Times","category":"fim-parish-info","icon":"smiley","description":"Example block scaffolded with Create Block tool.","supports":{"html":false},"textdomain":"blocks","editorScript":"file:./index.js","editorStyle":"file:./index.css","style":"file:./style-index.css"}');
+module.exports = JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","apiVersion":2,"name":"fim-parish-info/social-info","version":"1.0.0","title":"Parish Social Media Accounts","category":"fim-parish-info","icon":"dashicons-text","description":"Displays the parish social media information","supports":{"html":false},"attributes":{"show_icons":{"type":"boolean","default":true},"show_name":{"type":"boolean","default":true},"use_custom_colors":{"type":"boolean","default":false},"custom_color":{"type":"string","default":"#000000"}},"textdomain":"blocks","editorScript":"file:./index.js","editorStyle":"file:./index.css","style":"file:./style-index.css"}');
 
 /***/ })
 
@@ -338,8 +450,8 @@ module.exports = JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json
 /******/ 		// undefined = chunk not loaded, null = chunk preloaded/prefetched
 /******/ 		// [resolve, reject, Promise] = chunk loading, 0 = chunk loaded
 /******/ 		var installedChunks = {
-/******/ 			"mass-times/index": 0,
-/******/ 			"mass-times/style-index": 0
+/******/ 			"social-info/index": 0,
+/******/ 			"social-info/style-index": 0
 /******/ 		};
 /******/ 		
 /******/ 		// no chunk on demand loading
@@ -391,7 +503,7 @@ module.exports = JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module depends on other loaded chunks and execution need to be delayed
-/******/ 	var __webpack_exports__ = __webpack_require__.O(undefined, ["mass-times/style-index"], function() { return __webpack_require__("./src/mass-times/index.js"); })
+/******/ 	var __webpack_exports__ = __webpack_require__.O(undefined, ["social-info/style-index"], function() { return __webpack_require__("./src/social-info/index.js"); })
 /******/ 	__webpack_exports__ = __webpack_require__.O(__webpack_exports__);
 /******/ 	
 /******/ })()

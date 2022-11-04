@@ -59,6 +59,7 @@ class Fim_Parish_Info {
 
 		$this->loader->add_action('admin_menu', $plugin_admin, 'fim_parish_info_add_menu');
 		$this->loader->add_action('admin_init', $plugin_admin, 'fim_parish_info_settings');
+		$this->loader->add_action('rest_api_init', $plugin_admin, 'add_rest_route');
 
 	}
 

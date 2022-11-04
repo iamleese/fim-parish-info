@@ -30,6 +30,26 @@ class Fim_Parish_Info_Admin {
 		 wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/index.js', array(), $this->version, true );
 	}
 
+	public function add_rest_route(){
+		register_rest_route( 'fim-parish-info/v1', '/option/(?P<sfx>[a-zA-Z_-]+)', array(
+        'methods'  => WP_REST_Server::READABLE,
+        'callback' => array($this,'fim_parish_info_get_option')
+    ) );
+	}
+
+	public function fim_parish_info_get_option($option){
+		//$opt_sfx = $option['sfx'];
+		//$opt = get_option($this->option_name.'_'.$option['sfx']);
+		$opt = get_option($this->option_name.'_'.$option['sfx']);
+		if ( isset( $opt) ) {
+        return rest_ensure_response( $opt );
+    } else {
+        // Return a WP_Error because the request product was not found. In this case we return a 404 because the main resource was not found.
+        return new WP_Error( 'rest_fim_parish_option_invalid', esc_html__( 'The option is invalid.', 'fim-parish-info' ), array( 'status' => 404 ) );
+    }
+
+	}
+
 	/*
 	* Add Settings Menu
 	*/

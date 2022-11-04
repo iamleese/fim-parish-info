@@ -41,6 +41,8 @@ class Fim_Parish_Info_Blocks {
 		));
 
 		register_block_type( __DIR__ . '/build/mass-times' );
+		register_block_type( __DIR__ . '/build/social-info' );
+
 	}
 
 	public function ParishContact($attributes, $output = ''){

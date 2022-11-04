@@ -1,0 +1,35 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 2,
+	"name": "fim-parish-info/social-info",
+	"version": "1.0.0",
+	"title": "Parish Social Media Accounts",
+	"category": "fim-parish-info",
+	"icon": "dashicons-text",
+	"description": "Displays the parish social media information",
+	"supports": {
+		"html": false
+	},
+	"attributes":{
+		"show_icons": {
+			"type" : "boolean",
+			"default" : true
+		},
+		"show_name": {
+			"type" : "boolean",
+			"default" : true
+		},
+		"use_custom_colors": {
+			"type" : "boolean",
+			"default" : false
+		},
+		"custom_color": {
+			"type": "string",
+			"default": "#000000"
+		}
+	},
+	"textdomain": "blocks",
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style-index.css"
+}
