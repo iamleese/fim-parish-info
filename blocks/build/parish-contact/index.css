@@ -14,12 +14,12 @@
    * Replace them with your own styles or remove the file completely.
    */
 }
-.wp-block-fim-parish-info-parish-contact .wp-block-fim-parish-info-parish-contact {
+.wp-block-fim-parish-info-parish-contact .wp-block-fim-parish-info-parish-contact .contact-container {
   display: flex;
   flex-wrap: wrap;
   gap: 2rem;
 }
-.wp-block-fim-parish-info-parish-contact .wp-block-fim-parish-info-parish-contact > div {
+.wp-block-fim-parish-info-parish-contact .wp-block-fim-parish-info-parish-contact .contact-container > div {
   position: relative;
   flex: calc(50% - 2rem);
 }

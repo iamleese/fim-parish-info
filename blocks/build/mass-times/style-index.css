@@ -7,10 +7,32 @@
  *
  * Replace them with your own styles or remove the file completely.
  */
-.wp-block-fim-parish-info-mass-times {
-  background-color: #21759b;
-  color: #fff;
-  padding: 2px;
+.wp-block-fim-parish-info-mass-times.aligncenter {
+  text-align: center;
+}
+.wp-block-fim-parish-info-mass-times.aligncenter .mass_group li {
+  justify-content: center;
+}
+.wp-block-fim-parish-info-mass-times .mass_group {
+  margin-bottom: 1em;
+}
+.wp-block-fim-parish-info-mass-times .mass_group .group_title {
+  display: inline-block;
+  font-weight: 700;
+  margin-bottom: 0.5em;
+}
+.wp-block-fim-parish-info-mass-times .mass_group li {
+  list-style: none;
+  margin-left: 0;
+  padding-left: 0;
+  border-bottom: 1px solid #ccc;
+  display: flex;
+  flex-flow: row nowrap;
+  gap: 1em;
+}
+.wp-block-fim-parish-info-mass-times .mass_group li span {
+  max-width: -moz-min-content;
+  max-width: min-content;
 }
 
 /*# sourceMappingURL=style-index.css.map*/

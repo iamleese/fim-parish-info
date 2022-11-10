@@ -38,6 +38,9 @@
     "iconsize": {
       "type": "string",
       "default": "32"
+    },
+    "className": {
+      "type": "string"
     }
   },
   "textdomain": "fim-parish-info",

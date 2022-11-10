@@ -6,9 +6,38 @@
   "title": "Mass Times",
   "category": "fim-parish-info",
   "icon": "smiley",
-  "description": "Example block scaffolded with Create Block tool.",
+  "description": "Displays Mass Times",
+  "attributes": {
+    "hide_headings": {
+      "type": "boolean",
+      "default": "false"
+    },
+    "display_masstimes": {
+      "type": "boolean",
+      "default": true
+    },
+    "display_confessions": {
+      "type": "boolean",
+      "default": false
+    },
+    "display_custom": {
+      "type": "boolean",
+      "default": false
+    },
+    "align": {
+      "type": "string"
+    },
+    "className": {
+      "type": "string"
+    }
+  },
   "supports": {
-    "html": false
+    "html": false,
+    "align": [
+      "left",
+      "right",
+      "full"
+    ]
   },
   "textdomain": "blocks",
   "editorScript": "file:./index.js",

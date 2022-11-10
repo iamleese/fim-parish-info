@@ -6,7 +6,36 @@
  */
 
 .wp-block-fim-parish-info-mass-times {
-	background-color: #21759b;
-	color: #fff;
-	padding: 2px;
+
+  &.aligncenter{
+    text-align: center;
+    .mass_group li{
+      justify-content: center;
+    }
+  }
+
+  .mass_group{
+    margin-bottom: 1em;
+
+    .group_title{
+      display: inline-block;
+      font-weight: 700;
+      margin-bottom: .5em;
+    }
+
+    li{
+      list-style: none;
+      margin-left:0;
+      padding-left:0;
+      border-bottom: 1px solid #ccc;
+      display: flex;
+      flex-flow: row nowrap;
+      gap: 1em;
+
+      span{
+        max-width: min-content;
+      }
+    }
+  }
+
 }

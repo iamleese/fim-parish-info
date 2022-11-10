@@ -6,16 +6,21 @@
  */
 
 .wp-block-fim-parish-info-parish-contact {
-	display: flex;
-	flex-wrap: wrap;
-	gap: 2rem;
 
-	& > div{
-		position: relative;
-		flex: calc(50%  - 2rem);
+	.contact-container{
+		display: flex;
+		flex-wrap: wrap;
+		gap: 2rem;
+
+		> div{
+			position: relative;
+			flex: calc(50%  - 2rem);
+		}
 	}
 
+
 	.parish-info-contact-wrap{
+
 		h3{
 			font-size: var(--wp--preset--font-size-medium);
 			margin-bottom: 1em;

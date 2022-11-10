@@ -20,9 +20,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @wordpress/components */ "@wordpress/components");
 /* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var _wordpress_api_fetch__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @wordpress/api-fetch */ "@wordpress/api-fetch");
-/* harmony import */ var _wordpress_api_fetch__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_wordpress_api_fetch__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var _editor_scss__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./editor.scss */ "./src/mass-times/editor.scss");
+/* harmony import */ var _wordpress_autop__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @wordpress/autop */ "@wordpress/autop");
+/* harmony import */ var _wordpress_autop__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_wordpress_autop__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _wordpress_api_fetch__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @wordpress/api-fetch */ "@wordpress/api-fetch");
+/* harmony import */ var _wordpress_api_fetch__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_wordpress_api_fetch__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var _editor_scss__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./editor.scss */ "./src/mass-times/editor.scss");
+
 
 
 
@@ -34,8 +37,176 @@ __webpack_require__.r(__webpack_exports__);
 /**
  * @return {WPElement} Element to render.
  */
-function Edit() {
-  return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", (0,_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__.useBlockProps)(), (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Blocks – hello from the editor!', 'blocks'));
+function Edit(_ref) {
+  let {
+    attributes,
+    setAttributes
+  } = _ref;
+  const hide_headings = attributes.hide_headings;
+  const display_masstimes = attributes.display_masstimes;
+  const display_confessions = attributes.display_confessions;
+  const display_custom = attributes.display_custom;
+  function getMassTimes() {
+    const [massTimes, setMassTimes] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useState)('');
+    const [massResponse, setMassResponse] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useState)('');
+    const [massError, setMassError] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
+    function fetchMassTimes() {
+      setMassResponse('loading');
+      _wordpress_api_fetch__WEBPACK_IMPORTED_MODULE_5___default()({
+        path: '/fim-parish-info/v1/option/mass_times'
+      }).then(response => {
+        setMassResponse('success');
+        setMassTimes(response);
+      }).catch(error => {
+        setMassResponse('Error retrieving Mass Times');
+        setMassError(error);
+      });
+    }
+    (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
+      fetchMassTimes();
+    }, []);
+    if (massResponse === 'error') return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h1", null, massError.toString());
+    if (massResponse === 'success' && display_masstimes == true) {
+      return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null, hide_headings ? '' : (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h4", null, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Mass Times')), massResponse === 'loading' ? (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h4", null, "Loading...") : Object.entries(massTimes).map(_ref2 => {
+        let [k, timegroup] = _ref2;
+        var title = timegroup.title;
+        var massList = timegroup.timeset;
+        return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+          className: "mass_group"
+        }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
+          className: "group_title"
+        }, title), massList.map(item => {
+          var time = item.time;
+          var notes = item.notes;
+          return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("li", {
+            className: "masstime"
+          }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
+            class: "time"
+          }, time), notes ? (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
+            class: "details"
+          }, notes) : '');
+        }));
+      }));
+    }
+  }
+  function getConfessions() {
+    const [confessions, setConfessions] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useState)('');
+    const [confessionsResponse, setConfessionsResponse] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useState)('');
+    const [confessionsError, setConfessionsError] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
+    function fetchConfessions() {
+      setConfessionsResponse('loading');
+      _wordpress_api_fetch__WEBPACK_IMPORTED_MODULE_5___default()({
+        path: '/fim-parish-info/v1/option/confessions'
+      }).then(response => {
+        setConfessionsResponse('success');
+        setConfessions((0,_wordpress_autop__WEBPACK_IMPORTED_MODULE_4__.autop)(response));
+      }).catch(error => {
+        setConfessionsResponse('Error retrieving confessions');
+        setConfessionsError(error);
+      });
+    }
+    (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
+      fetchConfessions();
+    }, []);
+    if (confessionsResponse === 'error') return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h1", null, confessionsError.toString());
+    if (confessionsResponse === 'success' && display_confessions == true) {
+      return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null, confessionsResponse === 'loading' ? (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h4", null, "Loading...") : (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null, hide_headings ? '' : (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h4", null, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Confessions')), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__.RichText.Content, {
+        tagName: "p",
+        value: confessions
+      })));
+    }
+  }
+  function getCustom() {
+    const [custom, setCustom] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useState)('');
+    const [customResponse, setCustomResponse] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useState)('');
+    const [customError, setCustomError] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
+    const [customTitle, setCustomTitle] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useState)('');
+    const [customTitleResponse, setCustomTitleResponse] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useState)('');
+    const [customTitleError, setCustomTitleError] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
+    function fetchCustom() {
+      setCustomResponse('loading');
+      _wordpress_api_fetch__WEBPACK_IMPORTED_MODULE_5___default()({
+        path: '/fim-parish-info/v1/option/custom_content'
+      }).then(response => {
+        setCustomResponse('success');
+        setCustom((0,_wordpress_autop__WEBPACK_IMPORTED_MODULE_4__.autop)(response));
+      }).catch(error => {
+        setCustomResponse('Error retrieving custom entry');
+        setCustomError(error);
+      });
+    }
+    function fetchCustomTitle() {
+      setCustomTitleResponse('loading');
+      _wordpress_api_fetch__WEBPACK_IMPORTED_MODULE_5___default()({
+        path: '/fim-parish-info/v1/option/custom_title'
+      }).then(response => {
+        setCustomTitleResponse('success');
+        setCustomTitle(response);
+      }).catch(error => {
+        setCustomTitleResponses('Error retrieving custom title');
+        setCustomTitleError(error);
+      });
+    }
+    (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
+      fetchCustom();
+      fetchCustomTitle();
+    }, []);
+    if (customTitleResponse === 'error') return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h1", null, customTitlerror.toString());
+    if (customTitleResponse === 'success') {
+      var title = customTitle.toString();
+    }
+    if (customResponse === 'error') return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h1", null, customError.toString());
+    if (customResponse === 'success' && display_custom == true) {
+      return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null, customResponse === 'loading' ? (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h4", null, "Loading...") : (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null, hide_headings ? '' : (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h4", null, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)(title)), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__.RichText.Content, {
+        tagName: "p",
+        value: custom
+      })));
+    }
+  }
+  function toggleMassTimes() {
+    if (display_masstimes == false && display_confessions == false && display_custom == false) {
+      setAttributes({
+        display_masstimes: true
+      });
+    }
+  }
+  return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", (0,_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__.useBlockProps)(), getMassTimes(), getConfessions(), getCustom(), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__.InspectorControls, {
+    key: "setting"
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.Panel, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.PanelBody, {
+    title: "Display Options"
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.PanelRow, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.ToggleControl, {
+    label: "Hide Headings",
+    checked: hide_headings,
+    onChange: val => {
+      setAttributes({
+        hide_headings: val
+      });
+    }
+  })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.PanelRow, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.ToggleControl, {
+    label: "Display Mass Times",
+    checked: display_masstimes,
+    onChange: val => {
+      setAttributes({
+        display_masstimes: val
+      }), toggleMassTimes();
+    }
+  })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.PanelRow, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.ToggleControl, {
+    label: "Display Confessions",
+    checked: display_confessions,
+    onChange: val => {
+      setAttributes({
+        display_confessions: val
+      }), toggleMassTimes();
+    }
+  })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.PanelRow, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.ToggleControl, {
+    label: "Display Custom",
+    checked: display_custom,
+    onChange: val => {
+      setAttributes({
+        display_custom: val
+      }), toggleMassTimes();
+    }
+  }))))));
 }
 
 /***/ }),
@@ -104,30 +275,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": function() { return /* binding */ save; }
 /* harmony export */ });
-/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
-/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/block-editor */ "@wordpress/block-editor");
-/* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1__);
-
+/* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/block-editor */ "@wordpress/block-editor");
+/* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_0__);
 /**
- * React hook that is used to mark the block wrapper element.
- * It provides all the necessary props like the class name.
- *
- * @see https://developer.wordpress.org/block-editor/reference-guides/packages/packages-block-editor/#useblockprops
- */
+* Save Mass Times
+**/
 
-
-/**
- * The save function defines the way in which the different attributes should
- * be combined into the final markup, which is then serialized by the block
- * editor into `post_content`.
- *
- * @see https://developer.wordpress.org/block-editor/reference-guides/block-api/block-edit-save/#save
- *
- * @return {WPElement} Element to render.
- */
-function save() {
-  return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1__.useBlockProps.save(), 'Blocks – hello from the saved content!');
+function save(_ref) {
+  let {
+    $attributes
+  } = _ref;
+  return null;
 }
 
 /***/ }),
@@ -163,6 +321,16 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module) {
 
 module.exports = window["wp"]["apiFetch"];
+
+/***/ }),
+
+/***/ "@wordpress/autop":
+/*!*******************************!*\
+  !*** external ["wp","autop"] ***!
+  \*******************************/
+/***/ (function(module) {
+
+module.exports = window["wp"]["autop"];
 
 /***/ }),
 
@@ -222,7 +390,7 @@ module.exports = window["wp"]["i18n"];
   \***********************************/
 /***/ (function(module) {
 
-module.exports = JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","apiVersion":2,"name":"fim-parish-info/mass-times","version":"0.1.0","title":"Mass Times","category":"fim-parish-info","icon":"smiley","description":"Example block scaffolded with Create Block tool.","supports":{"html":false},"textdomain":"blocks","editorScript":"file:./index.js","editorStyle":"file:./index.css","style":"file:./style-index.css"}');
+module.exports = JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","apiVersion":2,"name":"fim-parish-info/mass-times","version":"0.1.0","title":"Mass Times","category":"fim-parish-info","icon":"smiley","description":"Displays Mass Times","attributes":{"hide_headings":{"type":"boolean","default":"false"},"display_masstimes":{"type":"boolean","default":true},"display_confessions":{"type":"boolean","default":false},"display_custom":{"type":"boolean","default":false},"align":{"type":"string"},"className":{"type":"string"}},"supports":{"html":false,"align":["left","right","full"]},"textdomain":"blocks","editorScript":"file:./index.js","editorStyle":"file:./index.css","style":"file:./style-index.css"}');
 
 /***/ })
 

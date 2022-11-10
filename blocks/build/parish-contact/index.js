@@ -18,10 +18,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @wordpress/block-editor */ "@wordpress/block-editor");
 /* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _wordpress_server_side_render__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @wordpress/server-side-render */ "@wordpress/server-side-render");
-/* harmony import */ var _wordpress_server_side_render__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_wordpress_server_side_render__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @wordpress/components */ "@wordpress/components");
-/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @wordpress/components */ "@wordpress/components");
+/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _wordpress_api_fetch__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @wordpress/api-fetch */ "@wordpress/api-fetch");
+/* harmony import */ var _wordpress_api_fetch__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_wordpress_api_fetch__WEBPACK_IMPORTED_MODULE_4__);
 /* harmony import */ var _editor_scss__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./editor.scss */ "./src/parish-contact/editor.scss");
 
 
@@ -30,12 +30,8 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
 /**
- * The edit function describes the structure of your block in the context of the
- * editor. This represents what the editor will render when the block is used.
- *
- * @see https://developer.wordpress.org/block-editor/reference-guides/block-api/block-edit-save/#edit
- *
  * @return {WPElement} Element to render.
  */
 function Edit(_ref) {
@@ -48,14 +44,84 @@ function Edit(_ref) {
   var show_map = attributes.show_map;
   var show_email = attributes.show_email;
   var hide_headings = attributes.hide_headings;
-  return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", (0,_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__.useBlockProps)(), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)((_wordpress_server_side_render__WEBPACK_IMPORTED_MODULE_3___default()), {
-    block: "fim-parish-info/parish-contact",
-    attributes: attributes
-  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__.InspectorControls, {
+  function GetMapAPI() {
+    const [mapAPI, setMapAPI] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useState)('');
+    const [res, setRes] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useState)('');
+    const [err, setErr] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
+    function fetchMapAPI() {
+      setRes('loading');
+      _wordpress_api_fetch__WEBPACK_IMPORTED_MODULE_4___default()({
+        path: '/fim-parish-info/v1/option/maps_api_key'
+      }).then(response => {
+        setRes('success');
+        setMapAPI(response);
+      }).catch(err => {
+        setRes('error');
+        setErr(err);
+      });
+    }
+    (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
+      fetchMapAPI();
+    }, []);
+    if (res === 'error') return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h1", null, err.toString());
+    if (res === 'success') {
+      return mapAPI.toString();
+    }
+  }
+  function ContactInfo() {
+    const [contacts, setContacts] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useState)('');
+    const [state, setState] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useState)('');
+    const [error, setError] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
+    function fetchContacts() {
+      setState('loading');
+      _wordpress_api_fetch__WEBPACK_IMPORTED_MODULE_4___default()({
+        path: '/fim-parish-info/v1/option/contact_info'
+      }).then(response => {
+        setState('success');
+        setContacts(response);
+      }).catch(err => {
+        setState('error');
+        setError(err);
+      });
+    }
+    (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
+      fetchContacts();
+    }, []);
+    if (state === 'error') return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h1", null, error.toString());
+    const map_api_key = GetMapAPI();
+    const mapembed = encodeURI(contacts.street + ',' + contacts.city + ',' + contacts.state + ',' + contacts.zip);
+    const src = 'https://www.google.com/maps/embed/v1/place?key=' + map_api_key + '&q=' + mapembed;
+    return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+      className: "contact-container"
+    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+      className: "parish-info-contact-wrap"
+    }, state === 'loading' ? (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h4", null, "Loading...") : show_address ? (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+      className: "parish-info-address"
+    }, hide_headings ? '' : (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h3", null, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Address')), " ", contacts.street, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("br", null), contacts.city, ", ", contacts.state, " ", contacts.zip, " ") : '' + show_phone ? (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+      className: "parish-info-phone"
+    }, hide_headings ? '' : (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h3", null, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Phone')), " ", contacts.phone, " ") : '' + show_email ? (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+      className: "parish-info-email"
+    }, hide_headings ? '' : (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h3", null, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Email')), " ", (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("a", {
+      className: "emailaddress"
+    }, contacts.email)) : ''), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+      className: "parish-info-map"
+    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+      className: "mapouter"
+    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("iframe", {
+      id: "gmap_canvas",
+      referrerpolicy: "no-referrer-when-downgrade",
+      src: src,
+      frameborder: "0",
+      scrolling: "no",
+      marginheight: "0",
+      marginwidth: "0"
+    }))));
+  }
+  return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", (0,_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__.useBlockProps)(), ContactInfo(), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__.InspectorControls, {
     key: "setting"
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.Panel, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.PanelBody, {
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.Panel, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.PanelBody, {
     title: "Contact Visibility"
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.PanelRow, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.ToggleControl, {
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.PanelRow, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.ToggleControl, {
     label: "Show Address",
     checked: show_address,
     help: show_address ? 'Showing Address' : '',
@@ -64,7 +130,7 @@ function Edit(_ref) {
         show_address: val
       });
     }
-  })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.PanelRow, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.ToggleControl, {
+  })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.PanelRow, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.ToggleControl, {
     label: "Show Phone",
     checked: show_phone,
     help: show_phone ? 'Showing Phone Number' : '',
@@ -73,7 +139,7 @@ function Edit(_ref) {
         show_phone: val
       });
     }
-  })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.PanelRow, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.ToggleControl, {
+  })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.PanelRow, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.ToggleControl, {
     label: "Show Email",
     checked: show_email,
     help: show_email ? 'Showing Email' : '',
@@ -82,7 +148,7 @@ function Edit(_ref) {
         show_email: val
       });
     }
-  })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.PanelRow, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.ToggleControl, {
+  })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.PanelRow, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.ToggleControl, {
     label: "Show Map",
     checked: show_map,
     help: show_map ? 'Showing Map' : '',
@@ -91,7 +157,7 @@ function Edit(_ref) {
         show_map: val
       });
     }
-  })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.PanelRow, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.ToggleControl, {
+  })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.PanelRow, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.ToggleControl, {
     label: "Hide Headings",
     checked: hide_headings,
     help: hide_headings ? 'Headings Hidden' : '',
@@ -125,14 +191,6 @@ __webpack_require__.r(__webpack_exports__);
  */
 
 
-/**
- * Lets webpack process CSS, SASS or SCSS files referenced in JavaScript files.
- * All files containing `style` keyword are bundled together. The code used
- * gets applied both to the front of your site and to the editor.
- *
- * @see https://www.npmjs.com/package/@wordpress/scripts#using-css
- */
-
 
 /**
  * Internal dependencies
@@ -140,12 +198,6 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-
-/**
- * Every block starts by registering a new block type definition.
- *
- * @see https://developer.wordpress.org/block-editor/reference-guides/block-api/block-registration/
- */
 (0,_wordpress_blocks__WEBPACK_IMPORTED_MODULE_0__.registerBlockType)(_block_json__WEBPACK_IMPORTED_MODULE_4__.name, {
   /**
    * @see ./edit.js
@@ -188,7 +240,10 @@ __webpack_require__.r(__webpack_exports__);
  *
  * @return {WPElement} Element to render.
  */
-function save() {
+function save(_ref) {
+  let {
+    $attributes
+  } = _ref;
   return null;
 }
 
@@ -215,6 +270,16 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 // extracted by mini-css-extract-plugin
 
+
+/***/ }),
+
+/***/ "@wordpress/api-fetch":
+/*!**********************************!*\
+  !*** external ["wp","apiFetch"] ***!
+  \**********************************/
+/***/ (function(module) {
+
+module.exports = window["wp"]["apiFetch"];
 
 /***/ }),
 
@@ -268,23 +333,13 @@ module.exports = window["wp"]["i18n"];
 
 /***/ }),
 
-/***/ "@wordpress/server-side-render":
-/*!******************************************!*\
-  !*** external ["wp","serverSideRender"] ***!
-  \******************************************/
-/***/ (function(module) {
-
-module.exports = window["wp"]["serverSideRender"];
-
-/***/ }),
-
 /***/ "./src/parish-contact/block.json":
 /*!***************************************!*\
   !*** ./src/parish-contact/block.json ***!
   \***************************************/
 /***/ (function(module) {
 
-module.exports = JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","apiVersion":2,"name":"fim-parish-info/parish-contact","version":"0.1.0","title":"Parish Contact Information","category":"fim-parish-info","icon":"dashicons-text","description":"Displays the parish contact information","supports":{"html":false},"attributes":{"show_address":{"type":"boolean","default":true},"show_phone":{"type":"boolean","default":true},"show_map":{"type":"boolean","default":true},"hide_headings":{"type":"boolean","default":false}},"textdomain":"blocks","editorScript":"file:./index.js","editorStyle":"file:./index.css","style":"file:./style-index.css"}');
+module.exports = JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","apiVersion":2,"name":"fim-parish-info/parish-contact","version":"0.1.0","title":"Parish Contact Information","category":"fim-parish-info","icon":"dashicons-text","description":"Displays the parish contact information","supports":{"html":false},"attributes":{"show_address":{"type":"boolean","default":true},"show_phone":{"type":"boolean","default":true},"show_office_hours":{"type":"boolean","default":false},"show_map":{"type":"boolean","default":true},"hide_headings":{"type":"boolean","default":false},"className":{"type":"string","default":"wp-blocks-fim-parish-info-parish-contact"}},"textdomain":"fim-parish-info","editorScript":"file:./index.js","editorStyle":"file:./index.css","style":"file:./style-index.css"}');
 
 /***/ })
 

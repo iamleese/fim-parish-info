@@ -33,11 +33,6 @@ const classNames = __webpack_require__(/*! classnames */ "./node_modules/classna
 
 
 /**
- * The edit function describes the structure of your block in the context of the
- * editor. This represents what the editor will render when the block is used.
- *
- * @see https://developer.wordpress.org/block-editor/reference-guides/block-api/block-edit-save/#edit
- *
  * @return {WPElement} Element to render.
  */
 function Edit(_ref) {
@@ -473,7 +468,7 @@ module.exports = window["wp"]["i18n"];
 /***/ (function(module) {
 
 "use strict";
-module.exports = JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","apiVersion":2,"name":"fim-parish-info/social-info","version":"1.0.0","title":"Parish Social Media Accounts","category":"fim-parish-info","icon":"dashicons-text","description":"Displays the parish social media information","supports":{"html":false},"attributes":{"show_icons":{"type":"boolean","default":true},"show_name":{"type":"boolean","default":true},"use_custom_colors":{"type":"boolean","default":false},"custom_color":{"type":"string","default":"#000000"},"flexlayout":{"type":"string","default":"column"},"gap":{"type":"string","default":"5"},"iconsize":{"type":"string","default":"32"}},"textdomain":"fim-parish-info","editorScript":"file:./index.js","editorStyle":"file:./index.css","style":"file:./style-index.css"}');
+module.exports = JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","apiVersion":2,"name":"fim-parish-info/social-info","version":"1.0.0","title":"Parish Social Media Accounts","category":"fim-parish-info","icon":"dashicons-text","description":"Displays the parish social media information","supports":{"html":false},"attributes":{"show_icons":{"type":"boolean","default":true},"show_name":{"type":"boolean","default":true},"use_custom_colors":{"type":"boolean","default":false},"custom_color":{"type":"string","default":"#000000"},"flexlayout":{"type":"string","default":"column"},"gap":{"type":"string","default":"5"},"iconsize":{"type":"string","default":"32"},"className":{"type":"string"}},"textdomain":"fim-parish-info","editorScript":"file:./index.js","editorStyle":"file:./index.css","style":"file:./style-index.css"}');
 
 /***/ })
 
