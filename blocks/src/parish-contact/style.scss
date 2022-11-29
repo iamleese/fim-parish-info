@@ -1,13 +1,9 @@
 /**
- * The following styles get applied both on the front of your site
- * and in the editor.
- *
- * Replace them with your own styles or remove the file completely.
+ * fim-parish-info front/backend styles
  */
 
 .wp-block-fim-parish-info-parish-contact {
 
-	.contact-container{
 		display: flex;
 		flex-wrap: wrap;
 		gap: 2rem;
@@ -16,7 +12,7 @@
 			position: relative;
 			flex: calc(50%  - 2rem);
 		}
-	}
+
 
 
 	.parish-info-contact-wrap{
@@ -30,7 +26,7 @@
 
 	.parish-info-map{
 		min-width: 280px;
-		min-height: 200px;
+		min-height: 210px;
 
 		.mapouter{
 			width: 100%;

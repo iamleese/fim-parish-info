@@ -88,7 +88,7 @@ export default function Edit({attributes, setAttributes}) {
       const src = 'https://www.google.com/maps/embed/v1/place?key='+map_api_key+'&q='+mapembed;
 
       return (
-        <div className='contact-container'>
+        <div { ...useBlockProps() }>
           <div className="parish-info-contact-wrap">
                   {state === 'loading' ? (
                       <h4>Loading...</h4>

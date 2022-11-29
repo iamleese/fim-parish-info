@@ -37,7 +37,7 @@ class Fim_Parish_Info_Blocks {
 					'show_map' => ['type' => 'boolean', 'default' => true ],
 					'show_email' => ['type' => 'boolean', 'default' => false ],
 					'hide_headings' => ['type' => 'boolean', 'default' => false ],
-					'className' => ['type' => 'string', 'default' => 'wp-blocks-fim-parish-info-parish-contact']
+					'className' => ['type' => 'string', 'default' => 'wp-block-fim-parish-info-parish-contact']
 			]
 		));
 
@@ -119,7 +119,6 @@ class Fim_Parish_Info_Blocks {
 		}
 
 		$output = '<div class="'.$className.'">';
-
 		$output .=	'<div class="parish-info-contact-wrap">';
 
 		if($show_address){
@@ -148,7 +147,7 @@ class Fim_Parish_Info_Blocks {
 			$output .= '</div>';
 		}
 
-		$output .= '</div> <!-- parish-info-contact-wrap -->';
+		$output .= '</div> <!-- end parish-info-contact-wrap -->';
 
 		if($show_map){
 			$output .= '<div class="parish-info-map">';
@@ -157,10 +156,9 @@ class Fim_Parish_Info_Blocks {
   src="https://www.google.com/maps/embed/v1/place?key='.$mapkey.'&q='.$mapembed.'" frameborder="0" scrolling="no" marginheight="0" marginwidth="0">
 				</iframe>
 			</div>';
-			$output .= '</div> <!-- parish-info-map -->';
+			$output .= '</div> <!-- end parish-info-map -->';
 		}
 		$output .= '</div>';
-
 		$output .= ob_get_clean();
 
 		return $output;
@@ -217,9 +215,9 @@ class Fim_Parish_Info_Blocks {
 		$display_confessions = $attributes['display_confessions'];
 		$display_custom = $attributes['display_custom'];
 		$className = $attributes['className'];
-		$align = $attributes['align'];
+		$align = $attributes['align'] ? $attributes['align'] : '';
 
-		$blockProps = implode(' ', array($className, 'align'.$align));
+		$blockProps = implode(' ', array($className, $align ? 'align'.$align : ''));
 
 		ob_start();
 
