@@ -5,7 +5,6 @@
 	"version": "0.1.0",
 	"title": "Parish Contact Information",
 	"category": "fim-parish-info",
-	"icon": "dashicons-text",
 	"description": "Displays the parish contact information",
 	"supports": {
 		"html": false

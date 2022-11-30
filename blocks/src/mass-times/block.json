@@ -5,7 +5,6 @@
 	"version": "0.1.0",
 	"title": "Mass Times",
 	"category": "fim-parish-info",
-	"icon": "smiley",
 	"description": "Displays Mass Times",
 	"attributes" : {
 		"hide_headings": {

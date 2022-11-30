@@ -5,7 +5,6 @@
   "version": "1.0.0",
   "title": "Parish Social Media Accounts",
   "category": "fim-parish-info",
-  "icon": "dashicons-text",
   "description": "Displays the parish social media information",
   "supports": {
     "html": false
