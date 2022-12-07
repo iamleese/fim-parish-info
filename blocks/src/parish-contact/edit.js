@@ -93,11 +93,18 @@ export default function Edit({attributes, setAttributes}) {
                   {state === 'loading' ? (
                       <h4>Loading...</h4>
                   ) : (
-
                     show_address ? <div className="parish-info-address">{ hide_headings ? '': <h3>{__('Address')}</h3> } {contacts.street}<br />{contacts.city}, {contacts.state} {contacts.zip} </div> : ''
-                    +show_phone ? <div className="parish-info-phone">{ hide_headings ? '': <h3>{__('Phone')}</h3> } {contacts.phone} </div> : ''
-                    +show_email ? <div className="parish-info-email">{ hide_headings ? '': <h3>{__('Email')}</h3> } <a className="emailaddress">{contacts.email}</a></div> : ''
+                  )}
+                    {state === 'loading' ? (
+                      <h4>Loading...</h4>
+                  ) : (
+                    show_phone ? <div className="parish-info-phone">{ hide_headings ? '': <h3>{__('Phone')}</h3> } {contacts.phone} </div> : ''
 
+                  )}
+                    {state === 'loading' ? (
+                      <h4>Loading...</h4>
+                  ) : (
+                    show_email ? <div className="parish-info-email">{ hide_headings ? '': <h3>{__('Email')}</h3> } <a className="emailaddress">{contacts.email}</a></div> : ''
                   )}
           </div>
             <div className="parish-info-map">
