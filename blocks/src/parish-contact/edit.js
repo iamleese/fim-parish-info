@@ -17,7 +17,7 @@ export default function Edit({attributes, setAttributes}) {
   var show_email = attributes.show_email;
   var hide_headings = attributes.hide_headings;
 
-  function GetMapAPI() {
+  function GetGoogleMapAPI() {
       const [mapAPI, setMapAPI] = useState('');
       const [res, setRes] = useState('');
       const [err, setErr] = useState(false);
@@ -53,6 +53,7 @@ export default function Edit({attributes, setAttributes}) {
 
   }
 
+
   function ContactInfo() {
       const [contacts, setContacts] = useState('');
       const [state, setState] = useState('');
@@ -83,7 +84,7 @@ export default function Edit({attributes, setAttributes}) {
               </h1>
           );
 
-      const map_api_key = GetMapAPI();
+      const map_api_key = GetGoogleMapAPI();
       const mapembed = encodeURI(contacts.street+','+contacts.city+','+contacts.state+','+contacts.zip);
       const src = 'https://www.google.com/maps/embed/v1/place?key='+map_api_key+'&q='+mapembed;
 
