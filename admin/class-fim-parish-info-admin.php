@@ -23,11 +23,11 @@ class Fim_Parish_Info_Admin {
 
 	public function enqueue_scripts() {
 
-
 	}
 
 	public function admin_page_assets(){
 		 wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/index.js', array(), $this->version, true );
+
 	}
 
 	public function add_rest_route(){
@@ -38,8 +38,6 @@ class Fim_Parish_Info_Admin {
 	}
 
 	public function fim_parish_info_get_option($option){
-		//$opt_sfx = $option['sfx'];
-		//$opt = get_option($this->option_name.'_'.$option['sfx']);
 		$opt = get_option($this->option_name.'_'.$option['sfx']);
 		if ( isset( $opt) ) {
         return rest_ensure_response( $opt );
@@ -78,6 +76,8 @@ class Fim_Parish_Info_Admin {
 
 		register_setting( $this->plugin_name.'-contact', $this->option_name . '_contact_info');
 		register_setting( $this->plugin_name.'-contact', $this->option_name . '_maps_api_key');
+		register_setting( $this->plugin_name.'-contact', $this->option_name . '_map_type');
+		register_setting( $this->plugin_name.'-conatct', $this->option_name . '_lonlat');
 		register_setting( $this->plugin_name.'-contact', $this->option_name . '_office_hours');
 		register_setting( $this->plugin_name.'-contact', $this->option_name . '_social_links');
 		register_setting( $this->plugin_name.'-masstimes', $this->option_name . '_mass_times');
@@ -94,6 +94,7 @@ class Fim_Parish_Info_Admin {
 			$this->plugin_name.'-contact' //page
 		);
 
+
 		add_settings_field(
 			$this->option_name . '_contact_info', //field id
 			__( 'Contact Information', 'fim-parish-info' ), //title
@@ -101,6 +102,16 @@ class Fim_Parish_Info_Admin {
 			$this->plugin_name.'-contact',//page
 			$this->option_name . '_contact_section', //section
 			array( 'label_for' => $this->option_name . '_contact_info' ) //args
+		);
+
+
+		add_settings_field(
+			$this->option_name . '_', //field id
+			__( 'Map Type', 'fim-parish-info' ), //title
+			array( $this, $this->option_name . '_map_type_cb' ), //callback
+			$this->plugin_name.'-contact',//page
+			$this->option_name . '_contact_section', //section
+			array( 'label_for' => $this->option_name . '_map_type' ) //args
 		);
 
 		add_settings_field(
@@ -200,6 +211,10 @@ class Fim_Parish_Info_Admin {
 	public function fim_parish_info_contact_info_cb(){
 		$contactinfo = get_option($this->option_name.'_contact_info');
 		$mapkey = get_option($this->option_name.'_maps_api_key');
+		$lonlat = get_option($this->option_name.'_lonlat');
+		$map_type = get_option($this->option_name.'_map_type');
+		$map_type ? ' style="visibility:hidden" ' : ' style="visibility: visible;" ';
+
 		$mapembed = '';
 		if(empty($contactinfo) ) {
 			$contactinfo=[
@@ -213,7 +228,6 @@ class Fim_Parish_Info_Admin {
 		} else {
 			$mapembed = urlencode($contactinfo['street'].','.$contactinfo['city'].' '.$contactinfo['state'].', '.$contactinfo['zip']);
 		}
-
 
 
 		?>
@@ -236,11 +250,15 @@ class Fim_Parish_Info_Admin {
 
 			<label for="contact_phone">Main Email Address:</label>
 			<input type="text" id="contact_email" name="<?php echo $this->option_name.'_contact_info[email]';?>" value="<?php echo $contactinfo['email'] ?>" size="30">
+			<input type="hidden" id="contact_lonlat" name="<?php echo $this->option_name.'_contact_lonlat';?>" value="<?php echo $lonlat ?>">
 		</fieldset>
 		<div class="map">
 			<div class="mapouter">
+				<div id="ol_map" <?php echo $map_type ? ' style="visibility: visible;" ' : ' style="visibility: hidden;" '; ?> >
+						
+				</div>
 				<iframe id="gmap_canvas" referrerpolicy="no-referrer-when-downgrade"
-  src="https://www.google.com/maps/embed/v1/place?key=<?php echo $mapkey;?>&q=<?php echo $mapembed; ?>" frameborder="0" scrolling="no" marginheight="0" marginwidth="0">
+  src="https://www.google.com/maps/embed/v1/place?key=<?php echo $mapkey;?>&q=<?php echo $mapembed; ?>" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" <?php echo  $map_type ? ' style="visibility:hidden;" ' : ' style="visibility:visible;" '; ?> >
 				</iframe>
 			</div>
 		</div><!-- map -->
@@ -249,6 +267,19 @@ class Fim_Parish_Info_Admin {
 		 <?php
 
 	}
+
+	public function fim_parish_info_map_type_cb(){
+		$map_type = get_option($this->option_name.'_map_type'); 
+
+		?>
+		<fieldset class="map_type">
+		<label for="contact_map_type">Select a Map Type:</label>
+        <select id="contact_map_type" name="<?php echo $this->option_name.'_map_type';?>">
+            <option value="" <?php selected( $map_type, '', true ); ?> >Google Maps</option>
+            <option value="ol" <?php selected( $map_type, 'ol', true ); ?>>OpenLayers</option>
+        </select><br />
+		<span class="ol_notice"><em><?php echo __('OpenLayers Maps uses OpenStreetMap to pinpoint locations. Because OpenStreetMap is user-contributed, some locations may not be accurate. Visit <a href="https://openstreetmap.org/about">OpenStreetMap</a> for more information.') ?></em></span>
+	<?php }
 
 	public function fim_parish_info_maps_api_key_cb(){
 		$key = get_option($this->option_name.'_maps_api_key'); ?>

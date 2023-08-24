@@ -1,6 +1,8 @@
-//button functions in admin
-document.addEventListener('DOMContentLoaded', function(event) {
 
+//button functions in admin
+import { newOLmap } from "./ol_map";
+
+document.addEventListener('DOMContentLoaded', function(event) {
 
 
   function deleteButton(container_id) {
@@ -18,10 +20,15 @@ document.addEventListener('DOMContentLoaded', function(event) {
   //Add Time Group
   const addtimegroup = document.querySelector('.add_time_group');
 
-  addtimegroup.addEventListener("click",function(e){
-    e.preventDefault;
-    add_time_group();
-  });
+  if(addtimegroup){
+    addtimegroup.addEventListener("click",function(e){
+      e.preventDefault;
+      add_time_group();
+    });
+
+  }
+
+  
 
   function setFieldAttributes(obj,name,value){
     obj.setAttribute(name,value);
@@ -267,29 +274,99 @@ document.addEventListener('DOMContentLoaded', function(event) {
 
    }); //event listeners
 
+   //detect map selection change
+   const mapSelect = document.getElementById('contact_map_type');
+   const gmap = document.querySelector('#gmap_canvas');
+   const olmap = document.querySelector('#ol_map');
+
+   mapSelect.addEventListener('change', () => {
+        if(mapSelect.value == 'ol'){
+          gmap.style.visibility = "hidden";
+          olmap.style.visibility = "visible";
+        } else {
+          gmap.style.visibility = "visible";
+          olmap.style.visibility = "hidden";
+        }
+   });
+   //map selection change
+
 
    //get contact input change
+   
    let contactinputs = document.querySelectorAll('.contact_input');
+   const mapType = document.querySelector('#contact_map_type');
+   const lonlat = document.querySelector('#contact_lonlat');
+
    contactinputs.forEach(function(elem) {
-      elem.addEventListener("input", updateMap());
+      elem.addEventListener("input", mapDisplay());
     });
 
-    function updateMap(){
-        const street = document.getElementById('contact_street');
+
+    function encodeAddress(){
+        const street = document.getElementById('contact_street').value;
         const city = document.getElementById('contact_city');
         const state = document.getElementById('contact_state');
         const zipcode = document.getElementById('contact_zip');
+        let mapurlcode = null;
+        const regex = /.+?(?=#)/; //remove any pound signs
+        let address = street.match(regex);
+
+        if(address){
+          address = address[0];
+        } else {
+          address = street;
+        }
 
         if(street.value !== '' && city.value !== '' && state.value !== ''){
-          var fulladdress = street.value+', '+city.value+', '+state.value+' '+zipcode.value;
-          const mapurlcode = encodeURI(fulladdress);
+          var fulladdress = address+', '+city.value+', '+state.value+' '+zipcode.value;
+          mapurlcode = encodeURIComponent(fulladdress);
+        }
+
+        return mapurlcode;
+
+    }
+
+      async function getLonLat(){
+        let address = encodeAddress();
+        let url = 'https://nominatim.openstreetmap.org/search?q='+address+'&format=json';
+        try {
+          const res = await fetch(url, { method: "GET", mode: 'cors', headers: { 'Content-Type': 'application/json',} });
+          const jsonData = res.json();
+          return jsonData;
+        }
+        catch (error){
+          console.error(error);
+        }
+        
+      }
+
+      let lonlatData;
+
+      async function setMapVars() {
+
+        let data = await getLonLat();
+        data = JSON.stringify(data);
+        const mapData = JSON.parse(data);
+        console.log(mapData);
+        lonlatData = mapData[0].lon+','+mapData[0].lat;
+        lonlat.value = lonlatData;
+
+        newOLmap(lonlatData);
+        
+      };
+      
+      function mapDisplay(){
+        if(mapType == ''){ 
+          //gmap
           const map = document.getElementById('gmap_canvas');
           var regex = /(?<=q=)(.)+(?=&t)/;
           var mapsrc = map.getAttribute('src');
-          map.setAttribute('src', mapsrc.replace(regex,mapurlcode) );
-
+          map.setAttribute('src', mapsrc.replace(regex,encodeAddress()) );
         }
-    }
-
+      }
+  
+     setMapVars();
+      
+  
 
 });
