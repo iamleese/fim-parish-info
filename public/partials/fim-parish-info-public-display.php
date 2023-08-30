@@ -13,7 +13,8 @@ function fim_parish_info_popup_display(){
   ob_start();
   //address and map
   $contact_info = get_option($option_name.'_contact_info');
-  $mapkey = get_option($option_name.'_maps_api_key');
+  $maptype = get_option($option_name.'_map_type');
+
 
   //mass times
   $mass_times = get_option($option_name.'_mass_times');
@@ -30,6 +31,19 @@ function fim_parish_info_popup_display(){
 
   //setup contact_info
   $mapembed = urlencode($contact_info['street'].','.$contact_info['city'].','.$contact_info['state'].' '.$contact_info['zip']);
+
+  if($maptype == 'ol'){
+    $lonlat = get_option($option_name.'_contact_lonlat');
+    $map = '<div id="ol_map" data-lonlat="'.$lonlat.'"></div>';
+
+  } else {
+    $mapkey = get_option($option_name.'_maps_api_key');
+
+    $map =  '<iframe id="gmap_canvas" referrerpolicy="no-referrer-when-downgrade"
+    src="https://www.google.com/maps/embed/v1/place?key='.$mapkey.'&q='.$mapembed.'" frameborder="0" scrolling="no" marginheight="0" marginwidth="0">
+        </iframe>';
+  }
+
 
 
   $masstimes_output .= '<div class="popup_mass_times">';
@@ -50,11 +64,7 @@ function fim_parish_info_popup_display(){
   }
   $masstimes_output .= '</div><!--popup_mass_times-->';
   $masstimes_output .= '<div class="popup_map">';
-  $masstimes_output .= '<div class="mapouter">
-    <iframe id="gmap_canvas" referrerpolicy="no-referrer-when-downgrade"
-src="https://www.google.com/maps/embed/v1/place?key='.$mapkey.'&q='.$mapembed.'" frameborder="0" scrolling="no" marginheight="0" marginwidth="0">
-    </iframe>
-  </div><!--mapouter-->';
+  $masstimes_output .= '<div class="mapouter">'.$map.'</div><!--mapouter-->';
   $masstimes_output .= '<div class="popup_button_group">';
   $masstimes_output .= '<a class="popup_inner_button" href="https://www.google.com/maps/dir/'.$mapembed.'" target="_blank" rel="noreferrer" >'.__('Get Directions','fim_parish_info').'</a>';
 

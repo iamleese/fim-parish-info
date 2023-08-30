@@ -4,9 +4,13 @@
   "description": "Centralizes parish information to be used throughout the website",
   "main": "admin/js/index.js",
   "scripts": {
-    "start": "wp-scripts start",
+    "start": "concurrently \"wp-scripts start\" \"wp-scripts start /src/index.js --output-path=js\" ",
+    "build": "concurrently \"wp-scripts build\" \"wp-scripts build /src/index.js --output-path=js\"  ",
     "start:admin": "wp-scripts start /admin/src/index.js --output-path=admin/js",
-    "build:admin": "wp-scripts build /admin/src/index.js --output-path=admin/js"
+    "build:admin": "wp-scripts build /admin/src/index.js --output-path=admin/js",
+    "start:public": "wp-scripts start /public/src/index.js --output-path=public/js",
+    "build:public": "wp-scripts build /public/src/index.js --output-path=public/js",
+    "test": "jest"
   },
   "author": "Melissa Hiatt, Faith in Marketing",
   "license": "ISC",
@@ -14,6 +18,7 @@
     "@wordpress/scripts": "^24.4.0"
   },
   "dependencies": {
+    "concurrently": "^8.2.1",
     "ol": "^7.5.1"
   }
 }
