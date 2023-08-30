@@ -1,14 +1,16 @@
-document.addEventListener('DOMContentLoaded', function(event) {
 
+import { newOLmap } from "../../src/ol_map";
+
+document.addEventListener('DOMContentLoaded', function(event) {
 	//tab click
 	// store tabs variable
  var tabs = document.querySelectorAll(".popup_modal .tab");
+ let i = 0;
  for (i = 0; i < tabs.length; i++) {
 	 tabs[i].addEventListener("click", selectPane);
  }
 
  function selectPane(e) {
-
 
 	 for (var i = 0; i < tabs.length; i++) {
 		 tabs[i].classList.remove("active");
@@ -60,5 +62,20 @@ document.addEventListener('DOMContentLoaded', function(event) {
 		e.preventDefault;
 		modal.classList.remove('active');
 	});
+
+	//Add OpenLayers Map
+	const olmap = document.getElementById('ol_map');
+	const olmap_block = document.getElementById('ol_map_block')
+	
+	if( olmap ){
+		const lonlatData = olmap.dataset.lonlat;
+		newOLmap(lonlatData,'ol_map');
+	}
+
+	if( olmap_block ){
+		const lonlatData = olmap_block.dataset.lonlat;
+		newOLmap(lonlatData,'ol_map_block');
+	}
+	
 
 });

@@ -1,9 +1,8 @@
 
 //button functions in admin
-import { newOLmap } from "./ol_map";
+import { newOLmap } from "../../src/ol_map";
 
 document.addEventListener('DOMContentLoaded', function(event) {
-
 
   function deleteButton(container_id) {
     let a = document.createElement('a');
@@ -329,10 +328,12 @@ document.addEventListener('DOMContentLoaded', function(event) {
       async function getLonLat(){
         let address = encodeAddress();
         let url = 'https://nominatim.openstreetmap.org/search?q='+address+'&format=json';
+
         try {
           const res = await fetch(url, { method: "GET", mode: 'cors', headers: { 'Content-Type': 'application/json',} });
           const jsonData = res.json();
-          return jsonData;
+          return jsonData;      
+
         }
         catch (error){
           console.error(error);
@@ -347,11 +348,10 @@ document.addEventListener('DOMContentLoaded', function(event) {
         let data = await getLonLat();
         data = JSON.stringify(data);
         const mapData = JSON.parse(data);
-        console.log(mapData);
         lonlatData = mapData[0].lon+','+mapData[0].lat;
         lonlat.value = lonlatData;
 
-        newOLmap(lonlatData);
+        newOLmap(lonlatData,'ol_map');
         
       };
       

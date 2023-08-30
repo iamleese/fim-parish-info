@@ -29,6 +29,10 @@ class Fim_Parish_Info_Blocks {
 	}
 
 	public function fim_parish_info_register_blocks() {
+
+		register_block_type( __DIR__ . '/build/button-filter' );
+
+
 		register_block_type( __DIR__ . '/build/parish-contact', array(
 			'render_callback' => array($this, 'ParishContact'),
 			'attributes' => [
@@ -102,7 +106,11 @@ class Fim_Parish_Info_Blocks {
 		ob_start();
 
 		$contactinfo = get_option($this->option_name.'_contact_info');
+		$maptype = get_option($this->option_name.'_map_type');
 		$mapkey = get_option($this->option_name.'_maps_api_key');
+
+		
+
 		$mapembed = '';
 
 		if(empty($contactinfo) ) {
@@ -116,6 +124,16 @@ class Fim_Parish_Info_Blocks {
 			];
 		} else {
 			$mapembed = urlencode($contactinfo['street'].','.$contactinfo['city'].' '.$contactinfo['state'].', '.$contactinfo['zip']);
+		}
+
+		if($maptype == 'ol'){
+			$map_lonlat = get_option($this->option_name.'_contact_lonlat');
+
+			$map_output = '<div id="ol_map_block" data-lonlat="'.$map_lonlat.'"></div>';
+		} else {
+			$map_output = '<iframe id="gmap_canvas" referrerpolicy="no-referrer-when-downgrade"
+  src="https://www.google.com/maps/embed/v1/place?key='.$mapkey.'&q='.$mapembed.'" frameborder="0" scrolling="no" marginheight="0" marginwidth="0">
+				</iframe>';
 		}
 
 		$output = '<div class="'.$className.'">';
@@ -151,10 +169,8 @@ class Fim_Parish_Info_Blocks {
 
 		if($show_map){
 			$output .= '<div class="parish-info-map">';
-			$output .= '<div class="mapouter">
-				<iframe id="gmap_canvas" referrerpolicy="no-referrer-when-downgrade"
-  src="https://www.google.com/maps/embed/v1/place?key='.$mapkey.'&q='.$mapembed.'" frameborder="0" scrolling="no" marginheight="0" marginwidth="0">
-				</iframe>
+			$output .= '<div class="mapouter">'.$map_output.'
+				
 			</div>';
 			$output .= '</div> <!-- end parish-info-map -->';
 		}

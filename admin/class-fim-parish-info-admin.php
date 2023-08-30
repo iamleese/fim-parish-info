@@ -77,7 +77,7 @@ class Fim_Parish_Info_Admin {
 		register_setting( $this->plugin_name.'-contact', $this->option_name . '_contact_info');
 		register_setting( $this->plugin_name.'-contact', $this->option_name . '_maps_api_key');
 		register_setting( $this->plugin_name.'-contact', $this->option_name . '_map_type');
-		register_setting( $this->plugin_name.'-conatct', $this->option_name . '_lonlat');
+		register_setting( $this->plugin_name.'-contact', $this->option_name . '_contact_lonlat');
 		register_setting( $this->plugin_name.'-contact', $this->option_name . '_office_hours');
 		register_setting( $this->plugin_name.'-contact', $this->option_name . '_social_links');
 		register_setting( $this->plugin_name.'-masstimes', $this->option_name . '_mass_times');
@@ -104,9 +104,18 @@ class Fim_Parish_Info_Admin {
 			array( 'label_for' => $this->option_name . '_contact_info' ) //args
 		);
 
+		add_settings_field(
+			$this->option_name . '_contact_lonlat', //field id
+			__( '', 'fim-parish-info' ), //title
+			array( $this, $this->option_name . '_contact_info_cb' ), //callback
+			$this->plugin_name.'-contact',//page
+			$this->option_name . '_contact_section', //section
+			array( 'label_for' => $this->option_name . '_contact_lonlat' ) //args
+		);
+
 
 		add_settings_field(
-			$this->option_name . '_', //field id
+			$this->option_name . '_map_type', //field id
 			__( 'Map Type', 'fim-parish-info' ), //title
 			array( $this, $this->option_name . '_map_type_cb' ), //callback
 			$this->plugin_name.'-contact',//page
@@ -211,7 +220,7 @@ class Fim_Parish_Info_Admin {
 	public function fim_parish_info_contact_info_cb(){
 		$contactinfo = get_option($this->option_name.'_contact_info');
 		$mapkey = get_option($this->option_name.'_maps_api_key');
-		$lonlat = get_option($this->option_name.'_lonlat');
+		$lonlat = get_option($this->option_name.'_contact_lonlat');
 		$map_type = get_option($this->option_name.'_map_type');
 		$map_type ? ' style="visibility:hidden" ' : ' style="visibility: visible;" ';
 
