@@ -25,8 +25,8 @@ In the Admin area, click Parish Info to insert your information.
 
 ## Changelog
 
-### 1.2.0 (8/24/2023) 
-* IN PROGRESS: Add OpenLayers Map alternative
+### 1.2.0 (8/30/2023) 
+* Add OpenLayers Map alternative
 
 ### 1.0.0 (11/10/2022)
 *  stable version 
