@@ -107,7 +107,7 @@ class Fim_Parish_Info_Admin {
 		add_settings_field(
 			$this->option_name . '_contact_lonlat', //field id
 			__( '', 'fim-parish-info' ), //title
-			array( $this, $this->option_name . '_contact_info_cb' ), //callback
+			array( $this, $this->option_name . '_contact_lonlat_cb' ), //callback
 			$this->plugin_name.'-contact',//page
 			$this->option_name . '_contact_section', //section
 			array( 'label_for' => $this->option_name . '_contact_lonlat' ) //args
@@ -275,6 +275,10 @@ class Fim_Parish_Info_Admin {
 		<hr />
 		 <?php
 
+	}
+
+	public function fim_parish_info_contact_lonlat_cb(){
+	//null
 	}
 
 	public function fim_parish_info_map_type_cb(){

@@ -36,6 +36,7 @@ In the Admin area, click Parish Info to insert your information.
 
 ## To Do
 * integration with donation platforms
+* add data deletion option when uninstalling plugin
 
 ## Credits
 Thank you to the contributors of OpenStreetMap and OpenLayers for the free map API.
